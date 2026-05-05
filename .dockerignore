@@ -1,0 +1,11 @@
+.adk/
+__pycache__/
+*.pyc
+*.pyo
+.env
+.git/
+.gitignore
+*.md
+terraform/
+cloudbuild-*.yaml
+.dockerignore
