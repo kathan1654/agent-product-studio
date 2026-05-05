@@ -435,28 +435,45 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Empty State
-if not st.session_state.messages:
-    st.markdown("<br><br>", unsafe_allow_html=True)
-    col1, col2, col3 = st.columns([1,2,1])
-    with col2:
-        st.info("👋 **Welcome to the Studio!**\n\nTry asking me to build something:\n\n"
-                "- *\"Build a marketing dashboard using the sales_raw dataset\"*\n"
-                "- *\"Update the police-data-viewer to add a priority heatmap\"*\n"
-                "- *\"What projects exist in my workspace?\"*")
+tab_chat, tab_preview = st.tabs(["💬 Chat", "👁️ Visual Preview"])
 
-# Display chat history
-for msg in st.session_state.messages:
-    with st.chat_message(msg["role"], avatar="🏭" if msg["role"] == "assistant" else "👤"):
-        st.markdown(msg["content"])
-        if msg.get("activities"):
-            with st.expander("Terminal Logs", expanded=False):
-                st.markdown('<div class="terminal-container">', unsafe_allow_html=True)
-                st.markdown('<div class="terminal-header">sys.stdout — Agent Trace</div>', unsafe_allow_html=True)
-                for activity in msg["activities"]:
-                    st.markdown(f'<div class="agent-activity">{activity}</div>', unsafe_allow_html=True)
-                st.markdown('<div class="agent-activity">> Execution complete.<span class="terminal-cursor"></span></div>', unsafe_allow_html=True)
-                st.markdown('</div>', unsafe_allow_html=True)
+with tab_chat:
+    # Empty State
+    if not st.session_state.messages:
+        st.markdown("<br><br>", unsafe_allow_html=True)
+        col1, col2, col3 = st.columns([1,2,1])
+        with col2:
+            st.info("👋 **Welcome to the Studio!**\n\nTry asking me to build something:\n\n"
+                    "- *\"Build a marketing dashboard using the sales_raw dataset\"*\n"
+                    "- *\"Update the police-data-viewer to add a priority heatmap\"*\n"
+                    "- *\"What projects exist in my workspace?\"*")
+
+    # Display chat history
+    for msg in st.session_state.messages:
+        with st.chat_message(msg["role"], avatar="🏭" if msg["role"] == "assistant" else "👤"):
+            st.markdown(msg["content"])
+            if msg.get("activities"):
+                with st.expander("Terminal Logs", expanded=False):
+                    st.markdown('<div class="terminal-container">', unsafe_allow_html=True)
+                    st.markdown('<div class="terminal-header">sys.stdout — Agent Trace</div>', unsafe_allow_html=True)
+                    for activity in msg["activities"]:
+                        st.markdown(f'<div class="agent-activity">{activity}</div>', unsafe_allow_html=True)
+                    st.markdown('<div class="agent-activity">> Execution complete.<span class="terminal-cursor"></span></div>', unsafe_allow_html=True)
+                    st.markdown('</div>', unsafe_allow_html=True)
+
+with tab_preview:
+    if st.session_state.active_project:
+        from orchestrator.tools.gcs_tools import read_file
+        try:
+            mockup_html = read_file(st.session_state.active_project, "mockup.html")
+            if mockup_html and "File not found" not in mockup_html:
+                st.components.v1.html(mockup_html, height=800, scrolling=True)
+            else:
+                st.info("No visual wireframe has been generated for this project yet. Ask the agents to build one!")
+        except Exception:
+            st.info("No visual wireframe available.")
+    else:
+        st.info("Select or create a project to see its visual wireframe.")
 
 # Chat input
 if prompt := st.chat_input("Tell me what to build...", accept_file="multiple"):
@@ -527,9 +544,8 @@ if prompt := st.chat_input("Tell me what to build...", accept_file="multiple"):
                                     fc = part.function_call
                                     args_str = ', '.join(f'{k}={v}' for k, v in (fc.args or {}).items())
                                     activities.append(f"<span class='tool-call'>➜ {fc.name}</span>({args_str})")
-                                    proj = extract_project_name(args_str)
-                                    if proj:
-                                        st.session_state.active_project = proj
+                                    if fc.args and "project_name" in fc.args:
+                                        st.session_state.active_project = fc.args["project_name"]
                                 elif hasattr(part, "text") and part.text:
                                     if event.author == "orchestrator" or not event.author:
                                         f_resp += part.text
