@@ -1,0 +1,34 @@
+# cloudbuild-plan.yaml — Runs on PR to main (validation only)
+steps:
+  # Terraform Init
+  - id: "tf-init"
+    name: "hashicorp/terraform:1.5"
+    dir: "terraform"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - "terraform init -no-color"
+
+  # Terraform Validate
+  - id: "tf-validate"
+    name: "hashicorp/terraform:1.5"
+    dir: "terraform"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - "terraform validate -no-color"
+    waitFor: ["tf-init"]
+
+  # Terraform Plan
+  - id: "tf-plan"
+    name: "hashicorp/terraform:1.5"
+    dir: "terraform"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - "terraform plan -no-color -input=false"
+    waitFor: ["tf-validate"]
+
+options:
+  machineType: "E2_HIGHCPU_8"
+timeout: "600s"
