@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Product Studio — UI Mockup</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { font-family: 'Inter', sans-serif; }
+body { background: #09090b; color: #e2e8f0; margin: 0; height: 100vh; overflow: hidden; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #27272a; border-radius: 3px; }
+
+/* Animations */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+@keyframes typing { 0% { width: 0; } 100% { width: 100%; } }
+@keyframes glow { 0%, 100% { box-shadow: 0 0 8px rgba(99,102,241,0.3); } 50% { box-shadow: 0 0 20px rgba(99,102,241,0.5); } }
+
+.fade-in { animation: fadeIn 0.4s ease-out; }
+.glow-active { animation: glow 2s infinite; }
+.pulse-dot { animation: pulse-dot 1.5s infinite; }
+
+/* Glass card */
+.glass { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); backdrop-filter: blur(12px); }
+
+/* Divider drag handle */
+.drag-handle { cursor: col-resize; transition: background 0.2s; }
+.drag-handle:hover { background: rgba(99,102,241,0.4) !important; }
+
+/* Agent colors */
+.agent-orchestrator { color: #a78bfa; }
+.agent-architect { color: #60a5fa; }
+.agent-coder { color: #34d399; }
+.agent-infra { color: #fb923c; }
+.agent-reviewer { color: #22d3ee; }
+
+.agent-bg-orchestrator { background: rgba(167,139,250,0.1); border-color: rgba(167,139,250,0.2); }
+.agent-bg-architect { background: rgba(96,165,250,0.1); border-color: rgba(96,165,250,0.2); }
+.agent-bg-coder { background: rgba(52,211,153,0.1); border-color: rgba(52,211,153,0.2); }
+.agent-bg-infra { background: rgba(251,146,60,0.1); border-color: rgba(251,146,60,0.2); }
+.agent-bg-reviewer { background: rgba(34,211,238,0.1); border-color: rgba(34,211,238,0.2); }
+
+/* Project status badges */
+.badge-design { background: rgba(251,191,36,0.15); color: #fbbf24; }
+.badge-building { background: rgba(96,165,250,0.15); color: #60a5fa; }
+.badge-deployed { background: rgba(34,197,94,0.15); color: #22c55e; }
+
+/* Chat input */
+.chat-input-area { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
+.chat-input-area:focus-within { border-color: rgba(99,102,241,0.5); box-shadow: 0 0 0 3px rgba(99,102,241,0.1); }
+
+/* Preview action buttons */
+.btn-approve { background: linear-gradient(135deg, #22c55e, #16a34a); }
+.btn-approve:hover { background: linear-gradient(135deg, #16a34a, #15803d); }
+.btn-revise { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); }
+.btn-revise:hover { background: rgba(255,255,255,0.1); }
+
+/* Tab active */
+.tab-active { border-bottom: 2px solid #6366f1; color: white; }
+.tab-inactive { border-bottom: 2px solid transparent; color: #64748b; }
+.tab-inactive:hover { color: #94a3b8; }
+</style>
+</head>
+<body>
+<div class="flex h-screen">
+
+<!-- ═══ SIDEBAR ═══ -->
+<aside class="w-[280px] flex flex-col border-r border-white/5 bg-[#0c0c10]">
+  <!-- Logo -->
+  <div class="p-5 border-b border-white/5">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-lg">🏭</div>
+      <div>
+        <h1 class="text-sm font-bold tracking-tight text-white">Agent Product Studio</h1>
+        <p class="text-[10px] text-zinc-500 font-medium">Powered by Gemini 2.5 Pro</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- New Session -->
+  <div class="px-4 pt-4">
+    <button class="w-full py-2.5 rounded-lg bg-gradient-to-r from-indigo-600 to-indigo-500 text-white text-sm font-semibold hover:from-indigo-500 hover:to-indigo-400 transition-all flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/20">
+      <span class="text-lg">+</span> New Session
+    </button>
+  </div>
+
+  <!-- Chat History -->
+  <div class="px-4 pt-5 flex-1 overflow-y-auto">
+    <h3 class="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider mb-3">Chat History</h3>
+    <div class="space-y-1">
+      <div class="px-3 py-2.5 rounded-lg bg-indigo-500/10 border border-indigo-500/20 cursor-pointer">
+        <p class="text-[13px] text-white font-medium truncate">Agentic Insights Dashboard</p>
+        <p class="text-[11px] text-zinc-500 mt-0.5">Today, 11:31 PM</p>
+      </div>
+      <div class="px-3 py-2.5 rounded-lg hover:bg-white/[0.03] cursor-pointer transition">
+        <p class="text-[13px] text-zinc-400 truncate">Police Data Viewer Update</p>
+        <p class="text-[11px] text-zinc-600 mt-0.5">May 4, 11:19 PM</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Products -->
+  <div class="px-4 pb-2">
+    <h3 class="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider mb-3">Products</h3>
+    <div class="space-y-1.5">
+      <div class="px-3 py-2.5 rounded-lg glass glow-active border border-indigo-500/30 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <span class="text-base">🔥</span>
+          <span class="text-[13px] text-white font-medium">agentic-insights</span>
+        </div>
+        <span class="text-[10px] px-2 py-0.5 rounded-full badge-design font-medium">Design</span>
+      </div>
+      <div class="px-3 py-2.5 rounded-lg glass flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <span class="text-base">📦</span>
+          <span class="text-[13px] text-zinc-400">police-data-viewer</span>
+        </div>
+        <span class="text-[10px] px-2 py-0.5 rounded-full badge-deployed font-medium">Live</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Agent Legend -->
+  <div class="px-4 py-4 border-t border-white/5">
+    <h3 class="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider mb-2.5">Agents</h3>
+    <div class="grid grid-cols-2 gap-1.5 text-[11px]">
+      <span class="agent-orchestrator flex items-center gap-1.5">🧠 Orchestrator</span>
+      <span class="agent-architect flex items-center gap-1.5">📐 Architect</span>
+      <span class="agent-coder flex items-center gap-1.5">💻 Coder</span>
+      <span class="agent-infra flex items-center gap-1.5">🏗️ Infra</span>
+      <span class="agent-reviewer flex items-center gap-1.5">🔍 Reviewer</span>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══ MAIN CONTENT ═══ -->
+<div class="flex-1 flex flex-col">
+
+  <!-- Top Bar -->
+  <div class="h-12 border-b border-white/5 flex items-center px-4 bg-[#09090b]/80 backdrop-blur">
+    <div class="flex gap-6 text-sm">
+      <button class="tab-active pb-3 pt-3 px-1 font-medium transition" onclick="switchTab('chat')">💬 Chat</button>
+      <button class="tab-inactive pb-3 pt-3 px-1 font-medium transition" id="preview-tab" onclick="switchTab('preview')">
+        👁️ Visual Preview
+        <span class="ml-1.5 w-2 h-2 bg-green-500 rounded-full inline-block pulse-dot"></span>
+      </button>
+    </div>
+    <div class="ml-auto flex items-center gap-3">
+      <span class="text-[11px] text-zinc-600">Session: agentic-insights-dashboard</span>
+    </div>
+  </div>
+
+  <!-- Tab Content -->
+  <div class="flex-1 flex overflow-hidden">
+
+    <!-- ═══ CHAT TAB ═══ -->
+    <div id="chat-tab-content" class="flex-1 flex flex-col">
+
+      <!-- Messages -->
+      <div class="flex-1 overflow-y-auto px-6 py-6 space-y-6">
+
+        <!-- User Message -->
+        <div class="flex gap-3 fade-in max-w-3xl mx-auto">
+          <div class="w-8 h-8 rounded-full bg-zinc-700 flex items-center justify-center text-sm flex-shrink-0">K</div>
+          <div class="flex-1 pt-1">
+            <p class="text-sm text-zinc-300 leading-relaxed">I want to build a dashboard with an AI agent built-in that provides insight about the data — summaries, suggestions, and comparisons. It should have a sticky panel on the right side.</p>
+          </div>
+        </div>
+
+        <!-- Orchestrator Response -->
+        <div class="flex gap-3 fade-in max-w-3xl mx-auto">
+          <div class="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500/20 to-purple-600/20 border border-violet-500/30 flex items-center justify-center text-sm flex-shrink-0">🧠</div>
+          <div class="flex-1 pt-1">
+            <div class="flex items-center gap-2 mb-1.5">
+              <span class="text-[12px] font-semibold agent-orchestrator">Orchestrator</span>
+            </div>
+            <p class="text-sm text-zinc-300 leading-relaxed">Requirements captured! I'll have the Architect design the layout first so you can preview it. Starting Phase 1...</p>
+          </div>
+        </div>
+
+        <!-- Agent Activity Timeline -->
+        <div class="max-w-3xl mx-auto fade-in">
+          <div class="ml-11 glass rounded-xl p-4 space-y-3">
+            <p class="text-[11px] text-zinc-500 uppercase tracking-wider font-semibold">Agent Activity</p>
+
+            <div class="flex items-center gap-3 text-[13px] agent-bg-orchestrator border rounded-lg px-3 py-2">
+              <span>🧠</span>
+              <span class="agent-orchestrator font-medium">Orchestrator</span>
+              <span class="text-zinc-500">→</span>
+              <span class="text-zinc-400">save_requirements(<span class="text-indigo-400">agentic-insights-dashboard</span>)</span>
+              <span class="ml-auto text-[10px] text-zinc-600">0.3s</span>
+            </div>
+
+            <div class="flex items-center gap-3 text-[13px] agent-bg-architect border rounded-lg px-3 py-2">
+              <span>📐</span>
+              <span class="agent-architect font-medium">Architect</span>
+              <span class="text-zinc-500">→</span>
+              <span class="text-zinc-400">get_schema(<span class="text-blue-400">fact_calls_for_service</span>)</span>
+              <span class="ml-auto text-[10px] text-zinc-600">1.2s</span>
+            </div>
+
+            <div class="flex items-center gap-3 text-[13px] agent-bg-architect border rounded-lg px-3 py-2">
+              <span>📐</span>
+              <span class="agent-architect font-medium">Architect</span>
+              <span class="text-zinc-500">→</span>
+              <span class="text-zinc-400">write_file(<span class="text-blue-400">mockup.html</span>)</span>
+              <span class="ml-auto text-[10px] text-zinc-600">4.8s</span>
+            </div>
+
+            <div class="flex items-center gap-3 text-[13px] agent-bg-architect border rounded-lg px-3 py-2">
+              <span>📐</span>
+              <span class="agent-architect font-medium">Architect</span>
+              <span class="text-zinc-500">→</span>
+              <span class="text-zinc-400">write_file(<span class="text-blue-400">GEMINI.md</span>)</span>
+              <span class="ml-auto text-[10px] text-zinc-600">2.1s</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Orchestrator Pause Message -->
+        <div class="flex gap-3 fade-in max-w-3xl mx-auto">
+          <div class="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500/20 to-purple-600/20 border border-violet-500/30 flex items-center justify-center text-sm flex-shrink-0">🧠</div>
+          <div class="flex-1 pt-1">
+            <div class="flex items-center gap-2 mb-1.5">
+              <span class="text-[12px] font-semibold agent-orchestrator">Orchestrator</span>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-yellow-500/10 text-yellow-400 font-medium">⏸ Awaiting Review</span>
+            </div>
+            <p class="text-sm text-zinc-300 leading-relaxed mb-3">I've generated the visual wireframe! Click the <strong class="text-white">👁️ Visual Preview</strong> tab above to see how it looks.</p>
+            <p class="text-sm text-zinc-400">Let me know if you want any design changes, or say <strong class="text-green-400">"looks good, build it"</strong> to proceed.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Chat Input -->
+      <div class="px-6 pb-6">
+        <div class="max-w-3xl mx-auto">
+          <div class="chat-input-area rounded-2xl px-4 py-3 flex items-end gap-3 transition-all">
+            <button class="text-zinc-500 hover:text-zinc-300 transition p-1" title="Attach file">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+            </button>
+            <button class="text-zinc-500 hover:text-zinc-300 transition p-1" title="Paste image (Ctrl+V)">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+            </button>
+            <div contenteditable="true" class="flex-1 text-sm text-zinc-300 outline-none min-h-[24px] max-h-[120px] overflow-y-auto" style="caret-color: #6366f1;" data-placeholder="Tell me what to build..."></div>
+            <button class="w-9 h-9 rounded-xl bg-indigo-600 hover:bg-indigo-500 flex items-center justify-center transition-colors flex-shrink-0">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+            </button>
+          </div>
+          <p class="text-center text-[11px] text-zinc-600 mt-2">Paste images with Ctrl+V • Drag & drop files • Powered by 5-agent hierarchy</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ PREVIEW TAB (hidden by default) ═══ -->
+    <div id="preview-tab-content" class="flex-1 flex-col hidden">
+      <div class="flex-1 flex flex-col p-4 gap-4">
+        <!-- Preview Header -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <span class="text-[13px] text-zinc-400">Project:</span>
+            <span class="text-[13px] text-white font-semibold">agentic-insights-dashboard</span>
+            <span class="text-[10px] px-2 py-0.5 rounded-full badge-design font-medium">Design Phase</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button class="btn-revise text-[13px] px-4 py-2 rounded-lg text-zinc-300 font-medium transition flex items-center gap-2">
+              ✏️ Request Changes
+            </button>
+            <button class="btn-approve text-[13px] px-4 py-2 rounded-lg text-white font-semibold transition shadow-lg shadow-green-500/20 flex items-center gap-2">
+              ✅ Approve & Build
+            </button>
+          </div>
+        </div>
+        <!-- Preview iframe -->
+        <div class="flex-1 rounded-xl overflow-hidden border border-white/10 bg-white">
+          <div class="w-full h-full flex items-center justify-center text-gray-400 text-lg">
+            <div class="text-center">
+              <p class="text-6xl mb-4">👁️</p>
+              <p class="text-gray-600 font-medium">Interactive HTML Preview</p>
+              <p class="text-gray-400 text-sm mt-1">The Architect's mockup.html renders here in a full iframe</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</div>
+
+<script>
+function switchTab(tab) {
+  const chatContent = document.getElementById('chat-tab-content');
+  const previewContent = document.getElementById('preview-tab-content');
+  const tabs = document.querySelectorAll('[onclick^="switchTab"]');
+
+  if (tab === 'chat') {
+    chatContent.classList.remove('hidden');
+    chatContent.classList.add('flex');
+    previewContent.classList.add('hidden');
+    previewContent.classList.remove('flex');
+    tabs[0].className = 'tab-active pb-3 pt-3 px-1 font-medium transition';
+    tabs[1].className = 'tab-inactive pb-3 pt-3 px-1 font-medium transition';
+  } else {
+    chatContent.classList.add('hidden');
+    chatContent.classList.remove('flex');
+    previewContent.classList.remove('hidden');
+    previewContent.classList.add('flex');
+    tabs[0].className = 'tab-inactive pb-3 pt-3 px-1 font-medium transition';
+    tabs[1].className = 'tab-active pb-3 pt-3 px-1 font-medium transition';
+  }
+}
+
+// Placeholder text for contenteditable
+const input = document.querySelector('[contenteditable]');
+input.addEventListener('focus', () => input.dataset.placeholder && (input.style.opacity = '1'));
+input.addEventListener('blur', () => { if (!input.textContent.trim()) input.style.opacity = '1'; });
+</script>
+</body>
+</html>
